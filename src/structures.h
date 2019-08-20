@@ -16,10 +16,12 @@
 extern "C" {
 #endif
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
 
 #include <stdlib.h>
+
+typedef void DEALLOC_ITEM(void* item);
 
 typedef struct Node {
 	void* value;
@@ -33,11 +35,25 @@ typedef struct Queue {
 
 Queue* queue_init();
 
-void queue_destroy(Queue* queue);
+void queue_destroy(Queue* queue, DEALLOC_ITEM* dealloc);
 
 void queue_enqueue(Queue* queue, void* item);
 
 void* queue_dequeue(Queue* queue);
+
+typedef struct Stack {
+	size_t stackSize;
+	void** stack;
+	int stackPointer;
+} Stack;
+
+Stack* stack_init(size_t size);
+
+void stack_destroy(Stack* stack, DEALLOC_ITEM* dealloc);
+
+int stack_push(Stack* stack, void* item);
+
+void* stack_pop(Stack* stack);
 
 #endif
 
