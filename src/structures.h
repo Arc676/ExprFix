@@ -25,7 +25,7 @@ typedef void DEALLOC_ITEM(void* item);
 
 typedef struct Node {
 	void* value;
-	Node* nextNode;
+	struct Node* nextNode;
 } Node;
 
 typedef struct Queue {

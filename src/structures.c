@@ -31,7 +31,7 @@ void queue_destroy(Queue* queue, DEALLOC_ITEM* dealloc) {
 	free(queue);
 }
 
-void queue_enqueue(Queue* queue, void** item) {
+void queue_enqueue(Queue* queue, void* item) {
 	Node* newNode = malloc(sizeof(Node));
 	newNode->value = item;
 	newNode->nextNode = NULL;
@@ -80,7 +80,7 @@ void stack_destroy(Stack* stack, DEALLOC_ITEM* dealloc) {
 int stack_push(Stack* stack, void* item) {
 	stack->stack[stack->stackPointer++] = item;
 	if (stack->stackPointer >= stack->stackSize) {
-		newSize = stack->stackSize * 2;
+		size_t newSize = stack->stackSize * 2;
 		void** newStack = realloc(stack->stack, newSize);
 		if (newStack) {
 			stack->stackSize = newSize;
