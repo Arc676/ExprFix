@@ -98,3 +98,10 @@ void* stack_pop(Stack* stack) {
 	}
 	return NULL;
 }
+
+void* stack_peek(Stack* stack) {
+	if (stack->stackPointer > 0) {
+		return stack->stack[stack->stackPointer - 1];
+	}
+	return NULL;
+}
