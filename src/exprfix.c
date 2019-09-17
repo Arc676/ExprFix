@@ -15,6 +15,8 @@
 #include "exprfix.h"
 
 char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps) {
+	char* postfix = malloc(2 * strlen(expr));
+	memset(postfix, 0, 2 * strlen(expr));
 	Stack* operatorStack = stack_init(20);
 	Queue* outputQueue = queue_init();
 	char* token = PARSE_TOKEN(expr, &progress);
@@ -25,12 +27,12 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 			int prec, left, tPrec, tLeft;
 			getOpProps(token, &prec, &left);
 			char* top = stack_peek(operatorStack);
-			if (isBin(top)) getOpProps(top, &tPrec, &tLeft);
+			if (top && isBin(top)) getOpProps(top, &tPrec, &tLeft);
 			while (top && top[0] != '(' && (isUn(top) || (isBin(top) && (tPrec > prec || (tPrec == prec && tLeft))))) {
 				stack_pop(operatorStack);
 				queue_enqueue(outputQueue, top);
 				top = stack_peek(operatorStack);
-				if (isBin(top)) getOpProps(top, &tPrec, &tLeft);
+				if (top && isBin(top)) getOpProps(top, &tPrec, &tLeft);
 			}
 			stack_push(operatorStack, token);
 		} else if (token[0] == ')') {
@@ -43,6 +45,7 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 			if (!top) {
 				stack_destroy(operatorStack, NULL);
 				queue_destroy(outputQueue, NULL);
+				free(postfix);
 				return NULL;
 			}
 			stack_pop(operatorStack);
@@ -53,7 +56,6 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 	while (token = stack_pop(operatorStack)) {
 		queue_enqueue(outputQueue, token);
 	}
-	char* postfix = malloc(2 * strlen(expr));
 	while (token = queue_dequeue(outputQueue)) {
 		sprintf(postfix, "%s %s", postfix, token);
 	}
