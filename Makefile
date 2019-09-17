@@ -40,4 +40,4 @@ $(ODIR)/%.o: $(SDIR)/%.c
 	$(CC) -c $(FLAGS) -o $@ $<
 
 clean:
-	rm -f $(LIBOUT) $(EXECOUT) $(ODIR)/*.o
+	rm -f $(LIBOUT) $(FDIR)/$(EXECOUT) $(ODIR)/*.o
