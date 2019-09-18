@@ -52,11 +52,11 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 		} else {
 			queue_enqueue(outputQueue, token);
 		}
-	} while (token = PARSE_TOKEN(NULL, &progress));
-	while (token = stack_pop(operatorStack)) {
+	} while ((token = PARSE_TOKEN(NULL, &progress)));
+	while ((token = stack_pop(operatorStack))) {
 		queue_enqueue(outputQueue, token);
 	}
-	while (token = queue_dequeue(outputQueue)) {
+	while ((token = queue_dequeue(outputQueue))) {
 		sprintf(postfix, "%s %s", postfix, token);
 	}
 	return postfix;
@@ -68,8 +68,8 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 	char* token = PARSE_TOKEN(expr, &progress);
 	do {
 		if (isBin(token)) {
-			char* op1 = stack_pop(stack);
 			char* op2 = stack_pop(stack);
+			char* op1 = stack_pop(stack);
 			char* res = malloc(strlen(token) + strlen(op1) + strlen(op2) + 3);
 			sprintf(res, "%s %s %s", token, op1, op2);
 			free(op1);
@@ -78,7 +78,7 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 		} else {
 			char* operand;
 			if (isUn(token)) {
-				char* unaryOperand = PARSE_TOKEN(NULL, &progress);
+				char* unaryOperand = stack_pop(stack);
 				operand = malloc(strlen(token) + strlen(unaryOperand) + 2);
 				sprintf(operand, "%s %s", token, unaryOperand);
 			} else {
@@ -87,7 +87,7 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 			}
 			stack_push(stack, operand);
 		}
-	} while (token = PARSE_TOKEN(NULL, &progress));
+	} while ((token = PARSE_TOKEN(NULL, &progress)));
 	char* prefix = stack_pop(stack);
 	stack_destroy(stack, free);
 	return prefix;
