@@ -62,7 +62,8 @@ typedef void OP_PROPERTIES(char* c, int* precedence, int* isLeftAssoc);
  * @param isBin Function to identify binary operators in the expression
  * @param isUn Function to identify unary operators in the expression
  * @param getOpPropos Function to determine operator properties
- * @return A newly allocated string containing the postfix representation of the given expression
+ * @return A newly allocated string containing the postfix representation of the given expression;
+ *	if the expression is empty, then the return value is the argument expr.
  */
 char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps);
 
@@ -72,7 +73,8 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
  * @param isBin Function to identify binary operators in the expression
  * @param isUn Function to identify unary operators in the expression
  * @param getOpPropos Function to determine operator properties
- * @return A newly allocated string containing the prefix representation of the given expression
+ * @return A newly allocated string containing the prefix representation of the given expression;
+ *	if the expression is empty, then the return value is the argument expr.
  */
 char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn);
 
@@ -82,7 +84,8 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn);
  * @param isBin Function to identify binary operators in the expression
  * @param isUn Function to identify unary operators in the expression
  * @param getOpPropos Function to determine operator properties
- * @return A newly allocated string containing the prefix representation of the given expression
+ * @return A newly allocated string containing the prefix representation of the given expression;
+ *	if the expression is empty, then the return value is the argument expr.
  */
 char* infixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps);
 

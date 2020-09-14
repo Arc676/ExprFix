@@ -1,4 +1,4 @@
-// Copyright (C) 2019 Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
+// Copyright (C) 2019-20 Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,6 +15,9 @@
 #include "exprfix.h"
 
 char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps) {
+	if (strlen(expr) == 0) {
+		return expr;
+	}
 	char* postfix = malloc(2 * strlen(expr));
 	memset(postfix, 0, 2 * strlen(expr));
 	Stack* operatorStack = stack_init(20);
@@ -59,10 +62,16 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 	while ((token = queue_dequeue(outputQueue))) {
 		sprintf(postfix, "%s %s", postfix, token);
 	}
-	return postfix;
+	char* ret = malloc(strlen(postfix));
+	memcpy(ret, postfix, strlen(postfix));
+	free(postfix);
+	return ret;
 }
 
 char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
+	if (strlen(expr) == 0) {
+		return expr;
+	}
 	Stack* stack = stack_init(50);
 	char* progress = NULL;
 	char* token = PARSE_TOKEN(expr, &progress);
@@ -94,6 +103,9 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 }
 
 char* infixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps) {
+	if (strlen(expr) == 0) {
+		return expr;
+	}
 	char* postfix = infixToPostfix(expr, isBin, isUn, getOpProps);
 	char* prefix = postfixToPrefix(postfix, isBin, isUn);
 	free(postfix);
