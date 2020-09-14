@@ -79,6 +79,10 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 		if (isBin(token)) {
 			char* op2 = stack_pop(stack);
 			char* op1 = stack_pop(stack);
+			if (!op1 || !op2) {
+				stack_destroy(stack, free);
+				return NULL;
+			}
 			char* res = malloc(strlen(token) + strlen(op1) + strlen(op2) + 3);
 			sprintf(res, "%s %s %s", token, op1, op2);
 			free(op1);
@@ -88,6 +92,10 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 			char* operand;
 			if (isUn(token)) {
 				char* unaryOperand = stack_pop(stack);
+				if (!unaryOperand) {
+					stack_destroy(stack, free);
+					return NULL;
+				}
 				operand = malloc(strlen(token) + strlen(unaryOperand) + 2);
 				sprintf(operand, "%s %s", token, unaryOperand);
 			} else {

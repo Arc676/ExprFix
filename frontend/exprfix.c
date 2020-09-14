@@ -69,7 +69,11 @@ int main(int argc, char* argv[]) {
 		usage();
 		return 1;
 	}
-	printf("%s\n", output);
-	free(output);
+	if (output) {
+		printf("%s\n", output);
+		free(output);
+	} else {
+		printf("Conversion failed\n");
+	}
 	return 0;
 }
