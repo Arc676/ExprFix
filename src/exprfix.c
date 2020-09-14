@@ -15,7 +15,7 @@
 #include "exprfix.h"
 
 char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps) {
-	if (strlen(expr) == 0) {
+	if (!expr || strlen(expr) == 0) {
 		return expr;
 	}
 	char* postfix = malloc(2 * strlen(expr));
@@ -62,14 +62,16 @@ char* infixToPostfix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES g
 	while ((token = queue_dequeue(outputQueue))) {
 		sprintf(postfix, "%s %s", postfix, token);
 	}
-	char* ret = malloc(strlen(postfix));
-	memcpy(ret, postfix, strlen(postfix));
+	char* ret = malloc(strlen(postfix) + 1);
+	memcpy(ret, postfix, strlen(postfix) + 1);
 	free(postfix);
+	stack_destroy(operatorStack, NULL);
+	queue_destroy(outputQueue, NULL);
 	return ret;
 }
 
 char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
-	if (strlen(expr) == 0) {
+	if (!expr || strlen(expr) == 0) {
 		return expr;
 	}
 	Stack* stack = stack_init(50);
@@ -111,7 +113,7 @@ char* postfixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn) {
 }
 
 char* infixToPrefix(char* expr, IS_BINARY isBin, IS_UNARY isUn, OP_PROPERTIES getOpProps) {
-	if (strlen(expr) == 0) {
+	if (!expr || strlen(expr) == 0) {
 		return expr;
 	}
 	char* postfix = infixToPostfix(expr, isBin, isUn, getOpProps);
